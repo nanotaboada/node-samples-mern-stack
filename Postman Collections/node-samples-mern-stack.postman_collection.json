@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "d385b2d1-fef5-44b0-9a59-aae1756ccba2",
+		"name": "node-samples-mern-stack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32077259"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Damián\",\n    \"middleName\": \"Emiliano\",\n    \"lastName\": \"Martínez\",\n    \"dateOfBirth\": \"1992-09-02T00:00:00.000Z\",\n    \"squadNumber\": 23,\n    \"position\": \"Goalkeeper\",\n    \"abbrPosition\": \"GK\",\n    \"team\": \"Aston Villa FC\",\n    \"league\": \"Premier League\",\n    \"starting11\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/players",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"players"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/players/65934d28b81f46171fe69699",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"players",
+						"65934d28b81f46171fe69699"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Dibu\",\n    \"lastName\": \"Martínez\",\n    \"squadNumber\": 23,\n    \"position\": \"Goalkeeper\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9000/players/65934d28b81f46171fe69699",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"players",
+						"65934d28b81f46171fe69699"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9000/players/65934d28b81f46171fe69699",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9000",
+					"path": [
+						"players",
+						"65934d28b81f46171fe69699"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
