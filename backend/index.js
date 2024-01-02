@@ -1,7 +1,12 @@
 import 'dotenv/config'
 import express from 'express';
 import mongoose from 'mongoose';
-import { Player } from './models/playerModel.js';
+import playerRoute from './routes/playerRoute.js';
+import cors from 'cors';
+
+/* ------------------------------------------------------------------------------------------------
+    Application
+------------------------------------------------------------------------------------------------ */
 
 /*
     Express.js is a lightweight and flexible Node.js web application framework that simplifies the
@@ -9,6 +14,10 @@ import { Player } from './models/playerModel.js';
     for building web and mobile applications quickly.
 */
 const app = express();
+
+/* ------------------------------------------------------------------------------------------------
+    Middlewares
+------------------------------------------------------------------------------------------------ */
 
 /*
     In Express.js, app.use(express.json()) is middleware that is used to parse incoming requests
@@ -22,139 +31,38 @@ const app = express();
 */
 app.use(express.json());
 
-/* ------------------------------------------------------------------------------------------------
-    HTTP POST
------------------------------------------------------------------------------------------------- */
+/*
+    Cross-Origin Resource Sharing (CORS) is a security feature implemented by web browsers that
+    restricts webpages from making requests to a different domain than the one that served the
+    original webpage. This restriction is known as the same-origin policy and is in place to
+    prevent potential security vulnerabilities.
 
-app.post('/players', async (request, response) => {
-    try {
-        if (
-            !request.body.firstName ||
-            !request.body.lastName ||
-            !request.body.squadNumber ||
-            !request.body.position
-        ) {
-            return response.status(400).send({
-                message: 'Required: firstName, lastName, squadNumber, position',
-            });
-        } else {
-            const player = {
-                firstName: request.body.firstName,
-                middleName: request.body.middleName,
-                lastName: request.body.lastName,
-                dateOfBirth: request.body.dateOfBirth,
-                squadNumber: request.body.squadNumber,
-                position: request.body.position,
-                abbrPosition: request.body.abbrPosition,
-                team: request.body.team,
-                league: request.body.league,
-                starting11: request.body.starting11,
-            };
-            const created = await Player.create(player);
-            console.log(created);
-            return response.status(201).send(created);
-        }
-    } catch (error) {
-        console.log(error.message);
-        response.status(500).send({ 
-            message: error.message
-        });
-    }
-});
+    When building web applications using Express.js as the backend server and making requests from
+    a frontend application served from a different domain, you might encounter CORS issues.
+    Express.js provides a middleware called 'cors' that helps handle CORS-related concerns by
+    enabling or configuring Cross-Origin Resource Sharing.
+*/
+app.use(cors());
+/*
+app.use(
+    cors({
+        origin: 'http://localhost:9000',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        allowedHeaders: ['Content-Type']
+    })
+);
+*/
+
+/*
+    In Express.js, a Router is a middleware that allows you to group route handlers and related
+    functionality together. It helps in organizing and modularizing your application by defining
+    routes and handling them separately, making the codebase more maintainable.
+*/
+app.use('/', playerRoute);
 
 /* ------------------------------------------------------------------------------------------------
-    HTTP GET
+    Database
 ------------------------------------------------------------------------------------------------ */
-
-app.get('/players', async (request, response) => {
-    try {
-        const players = await Player.find({});
-        console.log(players);
-        return response.status(200).json(players);
-    } catch (error) {
-        console.log(error.message);
-        response.status(500).send({ 
-            message: error.message
-        });
-    }
-});
-
-app.get('/players/:id', async (request, response) => {
-    try {
-        const { id } = request.params;
-        const player = await Player.findById(id);
-        console.log(player);
-        return response.status(200).json(player);
-    } catch (error) {
-        console.log(error.message);
-        response.status(500).send({ 
-            message: error.message
-        });
-    }
-});
-
-/* ------------------------------------------------------------------------------------------------
-    HTTP PUT
------------------------------------------------------------------------------------------------- */
-
-app.put('/players/:id', async (request, response) => {
-    try {
-        if (
-            !request.body.firstName ||
-            !request.body.lastName ||
-            !request.body.squadNumber ||
-            !request.body.position
-        ) {
-            return response.status(400).send({
-                message: 'Required: firstName, lastName, squadNumber, position',
-            });
-        } else {
-            const { id } = request.params;
-            const updated = await Player.findByIdAndUpdate(id, request.body);
-            console.log(updated);
-            if(!updated) {
-                return response.status(404).send({
-                    message: 'Player not found',
-                });
-            } else {
-                return response.status(200).send({
-                    message: 'Player successfully updated',
-                });
-            }
-        }
-    } catch (error) {
-        console.log(error.message);
-        response.status(500).send({ 
-            message: error.message
-        });
-    }
-});
-
-/* ------------------------------------------------------------------------------------------------
-    HTTP DELETE
------------------------------------------------------------------------------------------------- */
-
-app.delete('/players/:id', async (request, response) => {
-    try {
-        const { id } = request.params;
-        const deleted = await Player.findByIdAndDelete(id);
-        console.log(deleted);
-        if(!deleted) {
-            return response.status(404).send({
-                message: 'Player not found',
-            });
-        } else {
-            return response.status(200).send({
-                message: 'Player successfully deleted',
-            });
-        }
-    } catch (error) {
-        console.log(error.message);
-        response.status(500).send({ 
-            message: error.message
-        });
-    }
-});
 
 /* 
     Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a
